@@ -9,7 +9,7 @@ import {retry,catchError} from 'rxjs/operators';
 })
 export class RestApiService {
   currentUser = JSON.parse(localStorage.getItem('currentUser'))
-  apiURL = 'https://app-of-note.herokuapp.com/';
+  apiURL = 'https://app-of-note.herokuapp.com';
   token =""
 
   constructor(private http: HttpClient) {

@@ -11,7 +11,7 @@ import { User } from './user';
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
-    private apiURL = 'https://app-of-note.herokuapp.com/';
+    private apiURL = 'https://app-of-note.herokuapp.com';
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
