@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h2>Update Note</h2>
+                <form [formGroup]="noteForm" (ngSubmit)="onSubmit()" *ngIf="notes">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" value="{{notes.title}}" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }"/>
+                        <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                            <div *ngIf="f.title.errors.required">Title is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Note</label>
+                        <textarea type="text" value="{{notes.note}}" formControlName="note" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.note.errors }" rows="10"></textarea>
+                        <div *ngIf="submitted && f.note.errors" class="invalid-feedback">
+                            <div *ngIf="f.note.errors.required">You did not modify the note</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="loading" class="btn btn-primary">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Aceptar
+                        </button>
+                        &nbsp;
+                        <a class="btn btn-secondary" routerLink="/note-list">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
