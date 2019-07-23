@@ -16,24 +16,25 @@ import { Note } from '../shared/note';
 })
 export class NoteUpdateComponent implements OnInit {
   currentUser: User;
-  detail : User;
   noteForm: FormGroup;
   id = this.actRoute.snapshot.params['id'];
   loading = false;
   submitted = false;
   returnUrl: string;
   notes: Note;
-  // id = this.actRoute.snapshot.params['id'];
-  // employeeData: any = {};
+
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private actRoute: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private restApi: RestApiService,
     private alert: AlertService) { 
-      this.restApi.getNote(this.id).pipe(first()).subscribe(note => this.notes = note);
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-      this.restApi.getUser(this.currentUser.id).subscribe(x => this.detail = x);
+      this.restApi.getNote(this.id).pipe(first()).subscribe(note => {
+        this.notes = note;
+        this.noteForm.get('title').setValue(note.title);
+        this.noteForm.get('note').setValue(note.note);
+      });
   }
 
   get f() { return this.noteForm.controls; }
@@ -43,7 +44,7 @@ export class NoteUpdateComponent implements OnInit {
       title : ['', Validators.required],
       note :  ['', Validators.required]
     });
-    //this.noteForm.patchValue({note:this.notes.note});
+    
   }
 
   onSubmit() {

@@ -2,7 +2,7 @@
     <h1 class="text-center" *ngIf="currentUser">Hello {{currentUser.username}}!!!</h1>
 </div>
 <div class="col-md-4">
-    <a class="btn btn-primary" routerLink="/create-note">Create Note</a>
+    <a class="btn btn-primary" routerLink="/create-note"><i class="material-icons">edit</i>&nbsp;Create Note</a>
 </div>
 <hr/>
 <div class="row">
@@ -14,8 +14,9 @@
             <div class="card-body">
                 <p> {{note.note}} </p>
                 <small> {{ note.create_date | date }}</small>
-                <p style="align-items: center"><a routerLink="/update-note/{{note._id}}"><i class="material-icons">update</i>&nbsp;<span>Edit</span></a></p>
-                <p><a (click)="deleteNote(note._id)"><i class="material-icons">delete_forever</i>&nbsp;<span class="text-danger">Delete</span></a></p>
+                <hr>
+                <a class="btn btn-outline-primary btn-sm" routerLink="/update-note/{{note._id}}"><i class="material-icons">edit</i>&nbsp;<span class="text-sm-center">Edit</span></a>&nbsp;
+                <a class="btn btn-outline-danger btn-sm" (click)="deleteNote(note._id)"><i class="material-icons">delete_forever</i>&nbsp;<span class="text-danger text-sm-center">Delete</span></a>
             </div>
         </div>
     </div>
