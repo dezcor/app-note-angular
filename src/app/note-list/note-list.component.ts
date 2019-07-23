@@ -15,7 +15,6 @@ import { Note } from '../shared/note';
 })
 export class NoteListComponent implements OnInit {
   currentUser: User;
-  detail : User;
   notes: Note[];
   // id = this.actRoute.snapshot.params['id'];
   // employeeData: any = {};
@@ -23,7 +22,6 @@ export class NoteListComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private restApi: RestApiService) { 
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-      this.restApi.getUser(this.currentUser.id).subscribe(x => this.detail = x);
     }
   ngOnInit() {
     this.loadAllNotes()

@@ -12,7 +12,6 @@ import { User } from './shared/user';
 export class AppComponent {
   title = 'app-note';
   currentUser: User;
-  detail : User;
 
   constructor(
       private router: Router,
@@ -24,7 +23,6 @@ export class AppComponent {
 
   logout() {
       this.authenticationService.logout();
-      this.restApi.update()
       this.router.navigate(['/login']);
   }
 }

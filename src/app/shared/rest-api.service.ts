@@ -4,19 +4,25 @@ import { User } from './user'
 import { Note } from './note'
 import { Observable,throwError } from 'rxjs';
 import {retry,catchError} from 'rxjs/operators';
+import {AuthenticationService} from './authentication.service'
 @Injectable({
   providedIn: 'root'
 })
 export class RestApiService {
-  currentUser = JSON.parse(localStorage.getItem('currentUser'))
+  currentUser: User;
   apiURL = 'https://app-of-note.herokuapp.com';
   token =""
 
-  constructor(private http: HttpClient) {
-    if(this.currentUser)
-      this.token = this.currentUser['token'];
-    else
-      this.token = ""
+  constructor(private http: HttpClient,
+              private authenticationService:AuthenticationService ) {
+    this.authenticationService.currentUser.subscribe(x => {
+      this.currentUser = x
+      if(this.currentUser)
+        this.token = this.currentUser['token'];
+      else
+        this.token = ""
+      this.httpOptions.headers['x-access-token'] = this.token
+    });
    }
 
   httpOptions = {
@@ -27,21 +33,14 @@ export class RestApiService {
   }
 
   update(){
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
-    if(this.currentUser)
-      this.token = this.currentUser['token'];
-    else
-      this.token = ""
-    this.httpOptions.headers['x-access-token'] = this.token
+    
   }
   getUsers(): Observable<User>{
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.get<User>(this.apiURL+'/user',this.httpOptions)
     .pipe(retry(1),catchError(this.handleError))
   }
 
   getUser(id): Observable<User>{
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.get<User>(this.apiURL + '/user/' + id,this.httpOptions)
     .pipe(retry(1),catchError(this.handleError))
   }
@@ -52,43 +51,36 @@ export class RestApiService {
   }
 
   updateUser(id,user): Observable<User>{
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.put<User>(this.apiURL +'/user/'+id,JSON.stringify(user),this.httpOptions)
     .pipe(retry(1),catchError(this.handleError))
   }
 
   deleteUser(id){
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.delete<User>(this.apiURL+'/user/'+id,this.httpOptions)
     .pipe(retry(1),catchError(this.handleError))
   }
 
   createNote(note: Note): Observable<Note> {
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.post<Note>(this.apiURL + '/note',JSON.stringify(note),this.httpOptions)
     .pipe(retry(1),catchError(this.handleError))
   }
 
   getAllNotes(): Observable<Note[]>{
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.get<Note[]>(this.apiURL + '/note/',this.httpOptions)
     .pipe(retry(1),catchError(this.handleError))
   }
 
   getNote(id): Observable<Note>{
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.get<Note>(this.apiURL + `/note/${id}`,this.httpOptions)
     .pipe(retry(1),catchError(this.handleError),)
   }
 
   updateNote(id,note): Observable<Note>{
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.put<Note>(this.apiURL + `/note/${id}`,JSON.stringify(note),this.httpOptions)
     .pipe(retry(1),catchError(this.handleError))
   }
 
   deleteNote(id: '') {
-    this.httpOptions.headers['x-access-token'] = this.token
     return this.http.delete(this.apiURL + `/note/${id}`,this.httpOptions)
     .pipe(retry(1),catchError(this.handleError))
   }
